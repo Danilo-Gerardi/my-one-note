@@ -28,8 +28,8 @@ router.post('/signup', (req, res) => {
 });
 
 
-router.put('/note', async (req, res) => {
-    await user.update({
+router.put('/note', (req, res) => {
+    user.update({
         note: req.body.note,
     },
         {
@@ -47,18 +47,19 @@ router.put('/note', async (req, res) => {
 });
 
 
-router.get('/signin', async (req, res) => {
-    await user.findOne({
+router.get('/signin', (req, res) => {
+    user.findOne({
         where: {
-            uid: req.body.id,
+            email: req.body.email,
             password: req.body.password
         }
     })
         .then(data => {
-            res.json({ sucess: true, data: data });
+            res.json({ success: true, data: data });
         })
         .catch(err => {
-            res.json({ sucess: false, message: err });
+            res.status(400).send(err);
+            res.json({ success: false, message: err });
         });
 });
 
